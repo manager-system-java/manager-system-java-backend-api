@@ -24,10 +24,10 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     //Colocamos esse generate value para dizer que ele é um id gerado automaticamente pelo JTA
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     //Essa classe vai ter os atributos necessários do usuário
     //como nome, email e o id desse usuário
-    private String id;
+    private Long id;
     private String name;
     private String email;
     private String password;
