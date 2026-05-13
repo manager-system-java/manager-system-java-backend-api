@@ -1,4 +1,4 @@
-package com.example.login_auth_api.domain.user;
+package com.example.login_auth_api.domain;
 
 public enum UserRole {
     //Aqui é onde eu coloco as roles de usuario(colaborador), adimin e gerente

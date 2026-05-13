@@ -1,6 +1,7 @@
 package com.example.login_auth_api.controllers;
 
-import com.example.login_auth_api.domain.user.User;
+import com.example.login_auth_api.domain.User;
+import com.example.login_auth_api.domain.UserRole;
 import com.example.login_auth_api.dto.LoginRequestDTO;
 import com.example.login_auth_api.dto.RegisterRequestDTO;
 import com.example.login_auth_api.dto.ResponseDTO;
@@ -42,6 +43,7 @@ public class AuthController {
             newUser.setPassword(passwordEnconder.encode(body.password()));
             newUser.setEmail(body.email());
             newUser.setName(body.name());
+            newUser.setRole(UserRole.USER);
             this.repository.save(newUser);
 
                 String token = this.tokenService.generateToken(newUser);

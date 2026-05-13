@@ -1,4 +1,4 @@
 package com.example.login_auth_api.dto;
 
-public class ProjectRequestDTO {
+public record ProjectRequestDTO(String name, String description) {
 }
