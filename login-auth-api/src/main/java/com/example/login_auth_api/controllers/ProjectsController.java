@@ -43,12 +43,12 @@ public class ProjectsController {
 
     // Colaborador se afilia a um projeto
     @PostMapping("/{projectId}/join")
-    public ResponseEntity<String> joinProject(@PathVariable Long projectId, Authentication authentication) {
+    public ResponseEntity<?> joinProject(@PathVariable Long projectId, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new RuntimeException("Project not found"));
         project.getMembers().add(user);
         projectRepository.save(project);
-        return ResponseEntity.ok("Afiliado ao projeto com sucesso!");
+        return ResponseEntity.ok(new ProjectResponseDTO(project.getId(), project.getName(), project.getDescription()));
     }
 }
