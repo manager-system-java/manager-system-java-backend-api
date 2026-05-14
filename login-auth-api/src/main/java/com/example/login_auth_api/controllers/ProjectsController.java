@@ -2,6 +2,7 @@ package com.example.login_auth_api.controllers;
 
 import com.example.login_auth_api.domain.project.Project;
 import com.example.login_auth_api.domain.User;
+import com.example.login_auth_api.domain.project.ProjectStatus;
 import com.example.login_auth_api.dto.ProjectRequestDTO;
 import com.example.login_auth_api.dto.ProjectResponseDTO;
 import com.example.login_auth_api.repositories.ProjectRepository;
@@ -27,8 +28,15 @@ public class ProjectsController {
         Project project = new Project();
         project.setName(body.name());
         project.setDescription(body.description());
+        project.setStatus(ProjectStatus.ATIVO);
         projectRepository.save(project);
-        return ResponseEntity.ok(new ProjectResponseDTO(project.getId(), project.getName(), project.getDescription()));
+        return ResponseEntity.ok(new ProjectResponseDTO(
+                project.getId(),
+                project.getName(),
+                project.getDescription(),
+                project.getStatus().getStatus(),
+                project.getMembers().stream().map(User::getName).toList()
+        ));
     }
 
     // Lista todos os projetos (gerente e colaborador)
@@ -36,7 +44,13 @@ public class ProjectsController {
     public ResponseEntity<List<ProjectResponseDTO>> listProjects() {
         List<ProjectResponseDTO> projects = projectRepository.findAll()
                 .stream()
-                .map(p -> new ProjectResponseDTO(p.getId(), p.getName(), p.getDescription()))
+                .map(p -> new ProjectResponseDTO(
+                        p.getId(),
+                        p.getName(),
+                        p.getDescription(),
+                        p.getStatus().getStatus(),
+                        p.getMembers().stream().map(User::getName).toList()
+                ))
                 .toList();
         return ResponseEntity.ok(projects);
     }
@@ -48,7 +62,15 @@ public class ProjectsController {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new RuntimeException("Project not found"));
         project.getMembers().add(user);
+        project.setStatus(ProjectStatus.ATIVO);
         projectRepository.save(project);
-        return ResponseEntity.ok(new ProjectResponseDTO(project.getId(), project.getName(), project.getDescription()));
+        return ResponseEntity.ok(new ProjectResponseDTO(
+                project.getId(),
+                project.getName(),
+                project.getDescription(),
+                project.getStatus().getStatus(),
+                project.getMembers().stream().map(User::getName).toList()
+        ));
     }
+
 }
