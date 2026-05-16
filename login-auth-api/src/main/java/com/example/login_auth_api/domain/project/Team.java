@@ -7,35 +7,35 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "project")
+@Table(name = "team")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Project {
+public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
-    private ProjectStatus status;
-    private LocalDate startDate;
-    private LocalDate endDate;
-
-    @ManyToOne
-    @JoinColumn(name = "manager_id")
-    private User manager;
 
     @ManyToMany
     @JoinTable(
-            name = "user_projects",
-            joinColumns = @JoinColumn(name = "project_id"),
+            name = "team_members",
+            joinColumns = @JoinColumn(name = "team_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private Set<User> members = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "team_projects",
+            joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id")
+    )
+    private Set<Project> projects = new HashSet<>();
 }
