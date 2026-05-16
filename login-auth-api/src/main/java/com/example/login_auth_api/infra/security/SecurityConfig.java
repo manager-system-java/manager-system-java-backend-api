@@ -42,6 +42,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/projects").hasAnyRole("GERENTE", "ADMIN", "USER")
                         .requestMatchers(HttpMethod.POST, "/projects/{projectId}/join").hasAnyRole("USER", "GERENTE", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/adm").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/adm/users").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/adm/users/{id}/role").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/adm/users/{id}").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
