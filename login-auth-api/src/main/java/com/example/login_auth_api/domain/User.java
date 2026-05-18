@@ -32,7 +32,8 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private UserRole role;
-
+    @Column (unique = true)
+    private String cpf;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //função que lista as roles que o usuário tem

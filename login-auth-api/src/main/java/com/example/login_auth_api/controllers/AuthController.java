@@ -22,15 +22,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthController {
     private final UserRepository repository;
-    private final PasswordEncoder passwordEnconder;
+    private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginRequestDTO body) {
         User user = this.repository.findByEmail(body.email()).orElseThrow(() -> new RuntimeException("User not found"));
-        if(passwordEnconder.matches(body.password(), user.getPassword())){
+        if(passwordEncoder.matches(body.password(), user.getPassword())){
             String token = this.tokenService.generateToken(user);
-            return ResponseEntity.ok(new ResponseDTO(user.getName(), token, user.getRole().getRole()));
+            return ResponseEntity.ok(new ResponseDTO(user.getName(), user.getCpf(), token, user.getRole().getRole()));
         }
         return ResponseEntity.badRequest().build();
     }
@@ -40,14 +40,15 @@ public class AuthController {
         Optional <User> user = this.repository.findByEmail(body.email());
         if(user.isEmpty()){
             User newUser = new User();
-            newUser.setPassword(passwordEnconder.encode(body.password()));
+            newUser.setPassword(passwordEncoder.encode(body.password()));
             newUser.setEmail(body.email());
             newUser.setName(body.name());
+            newUser.setCpf(body.cpf());
             newUser.setRole(UserRole.USER);
             this.repository.save(newUser);
 
                 String token = this.tokenService.generateToken(newUser);
-            return ResponseEntity.ok(new ResponseDTO(newUser.getName(), token, newUser.getRole().getRole()));
+            return ResponseEntity.ok(new ResponseDTO(newUser.getName(), newUser.getCpf(), token, newUser.getRole().getRole()));
             }
 
 

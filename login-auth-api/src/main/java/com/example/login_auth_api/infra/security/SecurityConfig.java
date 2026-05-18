@@ -48,6 +48,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/teams").hasAnyRole("GERENTE", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/teams").hasAnyRole("GERENTE", "ADMIN", "USER")
                         .requestMatchers(HttpMethod.POST, "/teams/{teamId}/projects/{projectId}").hasAnyRole("GERENTE", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/affiliations/request/{projectId}").hasAnyRole("USER", "GERENTE", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/affiliations/pending").hasAnyRole("GERENTE", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/affiliations/approve/{requestId}").hasAnyRole("GERENTE", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/affiliations/reject/{requestId}").hasAnyRole("GERENTE", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
