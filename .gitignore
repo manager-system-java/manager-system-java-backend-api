@@ -1,6 +1,3 @@
-#Arquivo sensivel que contem a senha do banco de dados, não deve ser compartilhado
-login-auth-api/src/main/resources/application.properties
-
 # Compiled class file
 *.class
 
